@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pictura @if(isset($title)) {{ ' | ' . $title }} @else {{ '' }} @endif</title>
 
-    <link rel="icon" href="{{ asset('assets/images/static/favicon-logo.png') }}" type="image/png">
+    <link rel="icon" href="{{ asset('assets/img/favicon.png') }}" type="image/png">
 
     <!-- Main Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,12 +14,13 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap" rel="stylesheet">
+
     <!-- Fas Fa Icon -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
     <link href="{{ url('assets/css/bootstrap-framework.css') }}" rel="stylesheet">
     <link href="{{ url('assets/css/main-style.css') }}" rel="stylesheet">
+    <link href="{{ url('assets/css/app-style.css') }}" rel="stylesheet">
 </head>
 <body>

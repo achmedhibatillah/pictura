@@ -1,0 +1,9 @@
+.input-effect { border: 2px solid #ccc; transition: border-color 0.3s ease; }
+.input-effect:focus { border-color: var(--clr1); outline: none; }
+.input-effect::placeholder { transition: color 0.3s ease; }
+.input-effect:focus::placeholder { color: var(--clrsec); transition: color 0.3s ease; }
+
+#profile-bottom { height: 45px; width:45px; }
+@media (max-width: 766px) {
+    #profile-bottom { height: 40px; width: 40px; top: -10px; }
+}
