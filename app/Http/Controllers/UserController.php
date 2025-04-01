@@ -21,6 +21,14 @@ class UserController extends Controller
     {
         $userData = User::where('user_username', $user_username)->first();
         $isMyProfile = $userData->user_username == session('user')['user_username'] ? true : false ;
+        $connectStatus = [
+            'src' => User::checkConnect(session('user')['user_id'], $userData['user_id'], 'src'),
+            'dst' => User::checkConnect(session('user')['user_id'], $userData['user_id'], 'dst')
+        ];
+        $connectData = [
+            'connected' => User::getConnect($userData->user_id, 'dst'),
+            'connecting' => User::getConnect($userData->user_id, 'src'),
+        ];
 
         return 
         view('templates/header') . 
@@ -28,6 +36,8 @@ class UserController extends Controller
         view('user/profile', [
             'user' => $userData,
             'ismyprofile' => $isMyProfile,
+            'connect' => $connectStatus,
+            'connect_data' => $connectData,
         ]) . 
         view('templates/bottom-user') . 
         view('templates/footer');

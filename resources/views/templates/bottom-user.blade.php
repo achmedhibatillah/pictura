@@ -31,7 +31,11 @@
                 </div>
                 <div class="col-5 m-0 p-0 text-clr1 position-relative d-flex flex-column">
                     <div id="profile-bottom" class="position-absolute translate-center rounded-circle overflow-hidden cursor-pointer" style="border:3px solid white;left:50%;"  onclick="window.location.href='<?= url('usr/' . session('user')['user_username']) ?>'">
-                        <img src="{{ asset('assets/img/icons/blank-profile.png') }}" class="img-cover img-hover">
+                        @if(session('user')['user_photo'] !== null)
+                            <img src="{{ asset(session('user')['user_photo']) }}" class="img-cover img-death">
+                        @else
+                            <img src="{{ asset('assets/img/icons/blank-profile.png') }}" class="img-cover img-death">
+                        @endif                    
                     </div>
                     <div class="d-flex justify-content-center mt-auto">
                         <p class="text-center m-0 cursor-pointer w-75 overflow-hidden fsz-10 d-flex align-items-center justify-content-center" onclick="window.location.href='<?= url('usr/' . session('user')['user_username']) ?>'"><i class="font-rounded fst-normal fsz-9 mb-1" style="margin-right:1px;">@</i>{{ session('user')['user_username'] }}</p>

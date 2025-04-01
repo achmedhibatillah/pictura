@@ -1,7 +1,7 @@
 <div class="row m-0 p-0 justify-content-center">
     <div class="col-md-8 m-0 p-0">
         <div class="mb-2">
-            @include('templates/alert')
+            @include('templates/flashdata')
         </div>
         <div class="card m-0 p-3 mb-2">
             <p class="m-0 text-center">Edit My Profile</p>
@@ -23,11 +23,15 @@
         </div>
         <div class="card m-0 p-3 mb-2">
             <div class="d-flex align-items-center flex-column">
-                <div class="position-relative">
-                    <div class="rounded-circle overflow-hidden cursor-pointer flex-shrink-0" style="height:70px;width:70px;">
-                        <img src="{{ asset('assets/img/icons/blank-profile.png') }}" class="img-cover img-death">
+                <div class="position-relative hover">
+                    <div class="rounded-circle overflow-hidden cursor-pointer flex-shrink-0" data-bs-toggle="modal" data-bs-target="#modalEditPhoto" style="height:70px;width:70px;">
+                        @if($user['user_photo'] !== null)
+                            <img src="{{ asset($user['user_photo']) }}" class="img-cover img-death">
+                        @else
+                            <img src="{{ asset('assets/img/icons/blank-profile.png') }}" class="img-cover img-death">
+                        @endif
                     </div>
-                    <div class="bg-clr1 text-light he-20 we-20 fsz-8 rounded-circle d-flex justify-content-center align-items-center position-absolute translate-center" style="bottom:-10px;right:-10px;"><i class="fas fa-pencil"></i></div>
+                    <div class="bg-clr1 text-light he-20 we-20 fsz-8 rounded-circle d-flex justify-content-center align-items-center position-absolute translate-center hover cursor-pointer" style="bottom:-10px;right:-10px;"><i class="fas fa-pencil"></i></div>
                 </div>
                 <div class="d-flex align-items-start mt-4">
                     <div class="text-center">
@@ -136,6 +140,35 @@
 </div>
 
 <!-- Modal -->
+<div class="modal fade" id="modalEditPhoto" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content border-light rounded-m">
+            <div class="modal-header bg-clr2 text-light">
+                <h3 class="modal-title fw-bold">Change photo</h3>
+                <button type="button" class="ms-auto hover bg-clr2 border-light text-light rounded-circle he-28 we-28" data-bs-dismiss="modal" aria-label="Close">x</button>
+            </div>
+            <div class="modal-body">
+                <form action="{{ url('edit-profile/photo') }}" id="formEditPhoto" method="post" enctype="multipart/form-data" class="text-clr2">
+                    @csrf
+                    <div class="">
+                        <label class="ms-2" for="user_photo">New photo</label>
+                        <input name="user_photo" type="file" class="input-effect cursor-pointer rounded-s border-clr2 bg-clrsec he-35 w-100 px-3 fsz-11"
+                        accept="img">
+                        @error('user_photo')
+                            <div class="ms-2 mt-1 fsz-10 text-danger lh-1 d-flex"><i class="fas fa-exclamation-circle me-1"></i>{{ $message }}</div>
+                        @enderror
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-clr2" onclick="submitEditPhotoForm()">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
 <div class="modal fade" id="modalEditName" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content border-light rounded-m">
@@ -218,14 +251,23 @@ document.addEventListener("DOMContentLoaded", function () {
         var myModal = new bootstrap.Modal(document.getElementById('modalEditPass'));
         myModal.show();
     @endif
+    @if(session()->has('errors') && (session('errors')->has('user_photo')))
+        var myModal = new bootstrap.Modal(document.getElementById('modalEditPhoto'));
+        myModal.show();
+    @endif
     @if(session()->has('errors') && (session('errors')->has('user_username') || session('errors')->has('user_fullname')))
         var myModal = new bootstrap.Modal(document.getElementById('modalEditName'));
+        myModal.show();
+    @endif
+    @if(session()->has('errors') && (session('errors')->has('user_desc')))
+        var myModal = new bootstrap.Modal(document.getElementById('modalEditDescription'));
         myModal.show();
     @endif
 });
 
 function submitEditEmailForm() { document.getElementById('formEditEmail').submit(); }
 function submitEditPassForm() { document.getElementById('formEditPass').submit(); }
+function submitEditPhotoForm() { document.getElementById('formEditPhoto').submit(); }
 function submitEditNameForm() { document.getElementById('formEditName').submit(); }
 function submitEditDescForm() { document.getElementById('formEditDescription').submit(); }
 
@@ -256,3 +298,4 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 </script>
+

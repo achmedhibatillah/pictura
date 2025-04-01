@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\UserToUserConnect;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 
 class UserCogController extends Controller
@@ -73,6 +76,45 @@ class UserCogController extends Controller
         return redirect()->back()->with('success', 'Email updated successfully.');
     }
 
+    public function edit_photo(Request $request)
+    {
+        $userId = session('user')['user_id'];
+    
+        $request->validate([
+            'user_photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ], [
+            'user_photo.required' => 'Harap unggah foto.',
+            'user_photo.image' => 'File harus berupa gambar.',
+            'user_photo.mimes' => 'Format gambar yang diperbolehkan: jpeg, png, jpg, gif.',
+            'user_photo.max' => 'Ukuran gambar tidak boleh lebih dari 2MB.',
+        ]);
+    
+        if ($request->hasFile('user_photo')) {
+            $user_photo_file = $request->file('user_photo');
+            $user_photo_filename = LogicController::generateUniqueId('user', 'user_photo', 55) . '.' . $user_photo_file->getClientOriginalExtension();
+
+            $user_photo_path = 'assets/img/pp/';
+            $destinationPath = public_path($user_photo_path);
+    
+            $user = User::where('user_id', $userId)->first();
+            if ($user && $user->user_photo) {
+                $oldFilePath = public_path($user->user_photo);
+                if (File::exists($oldFilePath)) {
+                    File::delete($oldFilePath);
+                }
+            }
+    
+            $user_photo_file->move($destinationPath, $user_photo_filename);
+    
+            User::where('user_id', $userId)->update(['user_photo' => $user_photo_path . $user_photo_filename]);
+    
+            session(['user' => User::where('user_id', $userId)->first()]);
+            return redirect()->back()->with('success', 'Photo updated successfully.');
+        }
+    
+        return redirect()->back()->with('error', 'No photo uploaded.');
+    }
+
     public function edit_pass(Request $request)
     {
         $userId = session('user')['user_id'];
@@ -119,15 +161,14 @@ class UserCogController extends Controller
         $userId = session('user')['user_id'];
     
         $request->validate([
-            'user_desc' => 'required|max:350',
+            'user_desc' => 'max:350',
 
         ], [
-            'user_desc.required' => 'The description field is required.',
             'user_desc.max' => 'The description field must not be greater than 350 characters.',
         ]);
         
         $userData = [
-            'user_desc' => $request->user_desc,
+            'user_desc' => ($request->user_desc === '') ? null : $request->user_desc,
         ];
 
         $userLast = User::where('user_id', $userId)->first();
@@ -140,4 +181,25 @@ class UserCogController extends Controller
 
         return redirect()->back()->with('success', 'Description updated successfully.');
     }
+
+    public function connect_connecting(Request $request)
+    {
+        $relationData = [
+            'relation_id' => LogicController::generateUniqueId('user_to_user_connect', 'relation_id'),
+            'user_id_src' => session('user')['user_id'],
+            'user_id_dst' => $request->user_id_dst,
+            'connect_status' => 0,
+        ];
+
+        UserToUserConnect::create($relationData);
+
+        return redirect()->back();
+    }
+
+    public function connect_disconnect(Request $request)
+    {
+        UserToUserConnect::where('user_id_src', session('user')['user_id'])->where('user_id_dst', $request->user_id_dst)->delete();
+
+        return redirect()->back();
+    } 
 }

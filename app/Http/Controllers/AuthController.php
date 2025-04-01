@@ -82,6 +82,7 @@ class AuthController extends Controller
         ];
 
         User::create($userData);
+        $userData = User::where('user_id', $userData['user_id'])->first();
         session([
             'is_user' => true,
             'user' => $userData,

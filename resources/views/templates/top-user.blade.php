@@ -6,8 +6,8 @@
                 <form action="{{ url('search') }}" method="post" class="ms-auto">
                     @csrf 
                     <div class="position-relative" style="width:220px;">
-                        <i class="fas fa-search position-absolute translate-center fsz-10 text-secondary" style="top:52%;left:13px;"></i>
-                        <input name="k" type="text" autocomplete="off" class="m-0 rounded input-effect bg-light he-28 ps-4 pe-2 no-space no-capital w-100" placeholder="Search">
+                        <i class="fas fa-search position-absolute translate-center fsz-10 text-secondary" style="top:52%;left:16px;"></i>
+                        <input name="k" type="text" autocomplete="off" class="fsz-11 m-0 rounded-s input-effect bg-light he-28 pe-2 no-space no-capital w-100" style="padding-left:27px;" placeholder="Search">
                     </div>
                 </form>            
             </div>
