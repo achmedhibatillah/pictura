@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Post;
+use App\Models\Slide;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -52,6 +54,37 @@ class UserController extends Controller
         view('templates/top-user') . 
         view('user/profile-edit', [
             'user' => $userData,
+        ]) . 
+        view('templates/bottom-user') . 
+        view('templates/footer');
+    }
+
+    public function post_new($post_public_id = null)
+    {
+        if ($post_public_id == null) {
+            $postData = [
+                'post_id' => LogicController::generateUniqueId('post', 'post_id'),
+                'post_public_id' => LogicController::generateUniqueId('post', 'post_public_id', 55),
+                'post_desc' => null,
+                'post_status' => 3,
+                'user_id' => session('user')['user_id'],
+            ];
+    
+            Post::create($postData);
+            return redirect()->to('new-post/' . $postData['post_public_id']);
+        }
+
+        $postData = Post::where('post_public_id', $post_public_id)->first();
+        $slidesData = Slide::orderBy('slide_order', 'asc')->where('post_id', $postData->post_id)->get();
+        $postsData = Post::where('user_id', $postData->user_id)->first();
+
+        return 
+        view('templates/header') . 
+        view('templates/top-user') . 
+        view('user/post-new', [
+            'post' => $postData,
+            'slides' => $slidesData,
+            'posts' => $postsData,
         ]) . 
         view('templates/bottom-user') . 
         view('templates/footer');

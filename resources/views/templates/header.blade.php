@@ -19,6 +19,9 @@
     <!-- Fas Fa Icon -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 
+    <!-- Crop -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/croppie/2.6.5/croppie.min.css">
+
     <link href="{{ url('assets/css/bootstrap-framework.css') }}" rel="stylesheet">
     <link href="{{ url('assets/css/main-style.css') }}" rel="stylesheet">
     <link href="{{ url('assets/css/app-style.css') }}" rel="stylesheet">

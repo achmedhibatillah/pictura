@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserCogController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\GuestMiddleware;
@@ -19,8 +20,10 @@ Route::middleware([GuestMiddleware::class])->group(function () {
 });
 
 Route::middleware([UserMiddleware::class])->group(function () {
+
     Route::get('/', [UserController::class, 'index']);
     Route::get('usr/{slug}', [UserController::class, 'profile']);
+
     Route::get('edit-profile', [UserController::class, 'profile_edit']);
     Route::post('edit-profile/name', [UserCogController::class, 'edit_name']);
     Route::post('edit-profile/email', [UserCogController::class, 'edit_email']);
@@ -28,6 +31,11 @@ Route::middleware([UserMiddleware::class])->group(function () {
     Route::post('edit-profile/photo', [UserCogController::class, 'edit_photo']);
     Route::post('edit-profile/desc', [UserCogController::class, 'edit_desc']);
 
+    Route::get('new-post', [UserController::class, 'post_new']);
+    Route::get('new-post/{slug}', [UserController::class, 'post_new']);
+    Route::post('new-post/image/add', [PostController::class, 'post_image_new']);
+
     Route::post('req/connect', [UserCogController::class, 'connect_connecting']);
-    Route::post('req/disconnect', [UserCogController::class, 'connect_disconnect']); 
+    Route::post('req/disconnect', [UserCogController::class, 'connect_disconnect']);
+
 });
