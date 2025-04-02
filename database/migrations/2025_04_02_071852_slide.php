@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('slide', function(Blueprint $table) {
             $table->string('slide_id', 35)->primary();
             $table->string('slide_image', 255);
-            $table->integer('slide_order')->unique();
+            $table->integer('slide_order');
             $table->string('post_id', 35);
             $table->timestamps();
 

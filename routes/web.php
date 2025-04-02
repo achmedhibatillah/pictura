@@ -33,7 +33,11 @@ Route::middleware([UserMiddleware::class])->group(function () {
 
     Route::get('new-post', [UserController::class, 'post_new']);
     Route::get('new-post/{slug}', [UserController::class, 'post_new']);
+    Route::post('new-post/desc/edit', [PostController::class, 'post_desc_edit']);
     Route::post('new-post/image/add', [PostController::class, 'post_image_new']);
+    Route::post('new-post/image/up', [PostController::class, 'post_image_up']);
+    Route::post('new-post/image/down', [PostController::class, 'post_image_down']);
+    Route::post('new-post/image/del', [PostController::class, 'post_image_del']);
 
     Route::post('req/connect', [UserCogController::class, 'connect_connecting']);
     Route::post('req/disconnect', [UserCogController::class, 'connect_disconnect']);

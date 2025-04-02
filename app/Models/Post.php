@@ -18,4 +18,9 @@ class Post extends Model
         'post_status',
         'user_id',
     ];
+
+    public function slides()
+    {
+        return $this->hasMany(Slide::class, 'post_id');
+    }
 }

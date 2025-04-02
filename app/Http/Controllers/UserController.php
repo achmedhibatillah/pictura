@@ -76,8 +76,24 @@ class UserController extends Controller
 
         $postData = Post::where('post_public_id', $post_public_id)->first();
         $slidesData = Slide::orderBy('slide_order', 'asc')->where('post_id', $postData->post_id)->get();
-        $postsData = Post::where('user_id', $postData->user_id)->first();
 
+        $postsData = Post::where('post_status', 3)->where('user_id', $postData->user_id)->orderBy('created_at', 'desc')
+            ->with(['slides' => function($query) {
+                $query->orderBy('slide_order', 'asc');
+            }])->get();
+
+        // Cek ini
+        foreach ($postsData as $x) {
+            if ($postData->post_id !== $x->post_id && $x->slides->isEmpty()) {
+                Post::where('post_id', $x->post_id)->delete();
+            }
+        }
+
+        $postsData = Post::where('post_status', 3)->where('user_id', $postData->user_id)->orderBy('created_at', 'desc')
+        ->with(['slides' => function($query) {
+            $query->orderBy('slide_order', 'asc');
+        }])->get();
+    
         return 
         view('templates/header') . 
         view('templates/top-user') . 

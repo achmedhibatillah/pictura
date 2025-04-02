@@ -58,17 +58,17 @@
             <div class="d-flex mt-2 mb-2 text-clr1 fw-bold">Action</div>
             <div class="m-0 cursor-pointer bg-clrw hover d-flex align-items-center he-40" onclick="window.location.href='<?= url('edit-profile') ?>'">
                 <div class="we-40 d-flex justify-content-center"><i class="fa-solid fa-user-pen text-clr1 fsz-11"></i></div>
-                <p class="text-clr1 fsz-12 m-0 lh-1 text-center">Edit my profile</p>
+                <p class="text-clr1 fsz-12 m-0 lh-1 text-start">Edit my profile</p>
             </div>
             <hr class="m-0">
             <div class="m-0 cursor-pointer bg-clrw hover d-flex align-items-center he-40" onclick="window.location.href='<?= url('new-post') ?>'">
                 <div class="we-40 d-flex justify-content-center"><img src="{{ asset('assets/img/icons/post.png') }}" class="he-22 img-death"></div>
-                <p class="text-clr1 fsz-12 m-0 lh-1 text-center">New Post</p>
+                <p class="text-clr1 fsz-12 m-0 lh-1 text-start">New post and my draft</p>
             </div>
             <hr class="m-0">
             <div class="m-0 text-danger cursor-pointer bg-clrw hover d-flex align-items-center he-40" onclick="window.location.href='<?= url('new-post') ?>'">
                 <div class="we-40 d-flex justify-content-center"><i class="fas fa-sign-out-alt"></i></div>
-                <p class="fsz-12 m-0 lh-1 text-center">Logout</p>
+                <p class="fsz-12 m-0 lh-1 text-start">Logout</p>
             </div>
         </div>
         @endif
