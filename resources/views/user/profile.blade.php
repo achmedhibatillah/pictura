@@ -52,7 +52,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-4 m-0 p-0 ps-0 ps-md-2">
+    <div class="col-md-4 m-0 p-0 ps-0 ps-md-2"> 
         @if($ismyprofile == true)
         <div class="card m-0 px-3 py-2">
             <div class="d-flex mt-2 mb-2 text-clr1 fw-bold">Action</div>
