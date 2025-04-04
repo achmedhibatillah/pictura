@@ -31,8 +31,11 @@ Route::middleware([UserMiddleware::class])->group(function () {
     Route::post('edit-profile/photo', [UserCogController::class, 'edit_photo']);
     Route::post('edit-profile/desc', [UserCogController::class, 'edit_desc']);
 
+    Route::post('post/like', [PostController::class, 'post_like']);
+
     Route::get('new-post', [UserController::class, 'post_new']);
     Route::get('new-post/{slug}', [UserController::class, 'post_new']);
+    Route::post('new-post/share', [PostController::class, 'post_share']);
     Route::post('new-post/desc/edit', [PostController::class, 'post_desc_edit']);
     Route::post('new-post/image/add', [PostController::class, 'post_image_new']);
     Route::post('new-post/image/up', [PostController::class, 'post_image_up']);

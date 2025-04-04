@@ -4,11 +4,47 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use App\Models\Slide;
+use App\Models\UserToPostLike;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 
 class PostController extends Controller
 {
+    public function post_like(Request $request)
+    {
+        if ($request->like_req == 'like') {
+            $likeData = [
+                'relation_id' => LogicController::generateUniqueId('user_to_post_like', 'relation_id'),
+                'user_id' => session('user')['user_id'],
+                'post_id' => $request->post_id,
+                'like_status' => 1,
+            ];
+            UserToPostLike::create($likeData);
+        } else {
+            UserToPostLike::where('post_id', $request->post_id)
+                ->where('user_id', session('user')['user_id'])
+                ->delete();
+        }
+    
+        // Hitung total like terbaru
+        $likesCount = UserToPostLike::where('post_id', $request->post_id)->count();
+    
+        // Return JSON agar bisa digunakan oleh AJAX
+        return response()->json(['likes_count' => $likesCount]);
+    }
+    
+
+    public function post_share(Request $request)
+    {
+        $postData = [
+            'post_status' => 1,
+            'created_at' => now(),
+        ];
+
+        Post::where('post_id', $request->post_id)->update($postData);
+        return redirect()->to('usr/' . session('user')['user_username'])->with('success', 'New post successfully added.');
+    }
+
     public function post_desc_edit(Request $request)
     {
     

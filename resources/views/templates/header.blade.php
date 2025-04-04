@@ -25,5 +25,11 @@
     <link href="{{ url('assets/css/bootstrap-framework.css') }}" rel="stylesheet">
     <link href="{{ url('assets/css/main-style.css') }}" rel="stylesheet">
     <link href="{{ url('assets/css/app-style.css') }}" rel="stylesheet">
+
+    <!-- Slick -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel/slick/slick.css"/>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel/slick/slick-theme.css"/>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/slick-carousel/slick/slick.min.js"></script>
 </head>
 <body>

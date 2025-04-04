@@ -31,6 +31,8 @@ class UserController extends Controller
             'connected' => User::getConnect($userData->user_id, 'dst'),
             'connecting' => User::getConnect($userData->user_id, 'src'),
         ];
+        $postsCount = Post::where('post_status', 1)->where('user_id', $userData->user_id)->count();
+        $postsData = Post::getAll($userData->user_id);
 
         return 
         view('templates/header') . 
@@ -40,6 +42,8 @@ class UserController extends Controller
             'ismyprofile' => $isMyProfile,
             'connect' => $connectStatus,
             'connect_data' => $connectData,
+            'posts_count' => $postsCount,
+            'posts' => $postsData,
         ]) . 
         view('templates/bottom-user') . 
         view('templates/footer');

@@ -11,14 +11,17 @@
                 </form>
                 <p id="saveStatus" class="text-muted fsz-10"></p>
             </div>
+            <div class="d-flex mb-3">
+                <a href="#" data-bs-toggle="modal" data-bs-target="#modalAddImage" class="btn btn-clr1 btn-sm">Add image<i class="fas fa-image ms-1"></i></a>
+            </div>
             @if($slides->isNotEmpty())
                 @foreach($slides as $x)
                     <div class="d-flex align-items-center mb-2">
-                        <div class="me-3 text-center">
+                        <div class="me-4 text-center">
                             <p class="m-0 fsz-10 text-secondary">Slide</p>
                             <p class="m-0 text-clr1 fw-bold">{{ $x->slide_order }}</p>
                         </div>
-                        <div class="me-2 bg-danger square we-60 overflow-hidden">
+                        <div class="me-2 bg-secondary square we-60 overflow-hidden">
                             <img src="{{ asset($x->slide_image) }}" class="w-100">
                         </div>
                         <div class="d-flex gap-1">
@@ -59,12 +62,13 @@
             @else
                 <p class="text-secondary m-0 fsz-12">No images added yet.</p>
             @endif
-            <div class="d-flex mt-3">
-                <a href="#" data-bs-toggle="modal" data-bs-target="#modalAddImage" class="btn btn-clr1 btn-sm">Add image<i class="fas fa-image ms-1"></i></a>
-            </div>
             @if($slides->isNotEmpty())
                 <hr>
-                <p class="m-0"><a href="" class="td-hover fw-bold">Share Now</a></p>
+                <form action="{{ url('new-post/share') }}" method="post">
+                    @csrf
+                    <input type="hidden" name="post_id" value="{{ $post->post_id }}">
+                    <button type="submit" class="td-hover fw-bold text-primary btn btn-transparent p-0">Share now</button>
+                </form>
             @endif
         </div>
     </div>
@@ -149,20 +153,15 @@
                     @csrf 
                     <input type="hidden" name="post_id" value="{{ $post->post_id }}">
 
-                    <!-- Input file -->
-                    <input type="file" name="slide_image" id="slide_image" class="form-control" accept="image/*">
+                    <input type="file" name="slide_image" id="slide_image" class="form-control input-effect rounded-m" accept="image/*">
 
-                    <!-- Crop Preview -->
                     <div class="mt-3 text-center">
                         <img id="cropImage" src="#" class="d-none img-fluid rounded shadow-sm">
                     </div>
-
-                    <!-- Error Message -->
                     @error('slide_image')
                         <div class="text-danger mt-2">{{ $message }}</div>
                     @enderror
 
-                    <!-- Hidden Input untuk Gambar yang sudah dicrop -->
                     <input type="hidden" name="slide_image_cropped" id="slide_image_cropped">
                 </form>
             </div>
@@ -214,15 +213,12 @@ document.getElementById('crop-btn').addEventListener('click', function() {
             height: 1080
         });
 
-        // Convert the cropped image to base64
         canvas.toBlob(function(blob) {
             let reader = new FileReader();
             reader.readAsDataURL(blob);
             reader.onloadend = function() {
-                // Set the base64 data to the hidden input field
                 document.getElementById('slide_image_cropped').value = reader.result;
 
-                // Submit the form
                 document.getElementById('formEditPhoto').submit();
             };
         }, 'image/jpeg', 0.9);
@@ -230,7 +226,6 @@ document.getElementById('crop-btn').addEventListener('click', function() {
 });
 
 
-// Jika ada error, modal akan otomatis muncul
 @if(session()->has('errors') && session('errors')->has('slide_image'))
     var myModal = new bootstrap.Modal(document.getElementById('modalAddImage'));
     myModal.show();
