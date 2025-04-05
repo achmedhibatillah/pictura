@@ -11,10 +11,17 @@ class UserController extends Controller
 {
     public function index()
     {
+        $usersConnectData = User::getConnect(session('user')['user_id'], 'src');
+
+        $userIds = collect($usersConnectData['users'])->pluck('user_id')->all();
+        $postsData = Post::getAllByUsers($userIds);
+
         return 
         view('templates/header') . 
         view('templates/top-user') . 
-        view('user/index') . 
+        view('user/index', [
+            'posts' => $postsData,
+        ]) . 
         view('templates/bottom-user') . 
         view('templates/footer');
     }
@@ -109,7 +116,7 @@ class UserController extends Controller
         view('templates/footer');
     }
 
-    public function notification()
+    public function people()
     {
         $userData = User::where('user_username', session('user')['user_username'])->first();
         $isMyProfile = $userData->user_username == session('user')['user_username'] ? true : false ;

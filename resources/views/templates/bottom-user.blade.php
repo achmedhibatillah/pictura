@@ -21,11 +21,11 @@
                         </div>
                     </div>
                     <div class="col-4 m-0 p-0">
-                        <div class="cursor-pointer text-clr1" onclick="window.location.href='<?= url('notification') ?>'">
+                        <div class="cursor-pointer text-clr1" onclick="window.location.href='<?= url('find-people') ?>'">
                             <div class="d-flex justify-content-center img-hover">
-                                <img src="{{ asset('assets/img/icons/notification.png') }}" class="he-27 we-27 img-death">
+                                <img src="{{ asset('assets/img/icons/find-people.png') }}" class="he-27 we-27 img-death">
                             </div>
-                            <p class="text-center m-0 d-none d-md-block fsz-10">Notification</p>
+                            <p class="text-center m-0 d-none d-md-block fsz-10">Find People</p>
                         </div>
                     </div>
                 </div>

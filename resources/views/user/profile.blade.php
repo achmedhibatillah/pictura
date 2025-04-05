@@ -146,7 +146,7 @@
         <div class="card m-0 px-3 py-2">
             <div class="d-flex mt-2 mb-2 text-clr1 fw-bold">Action</div>
             <div class="m-0 cursor-pointer bg-clrw hover d-flex align-items-center he-40" onclick="window.location.href='<?= url('edit-profile') ?>'">
-                <div class="we-40 d-flex justify-content-center"><i class="fa-solid fa-user-pen text-clr1 fsz-11"></i></div>
+                <div class="we-40 d-flex justify-content-center"><img src="{{ asset('assets/img/icons/edit-profile.png') }}" class="he-20 img-death"></div>
                 <p class="text-clr1 fsz-12 m-0 lh-1 text-start">Edit my profile</p>
             </div>
             <hr class="m-0">

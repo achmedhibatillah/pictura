@@ -21,9 +21,7 @@ class PostController extends Controller
             ];
             UserToPostLike::create($likeData);
         } else {
-            UserToPostLike::where('post_id', $request->post_id)
-                ->where('user_id', session('user')['user_id'])
-                ->delete();
+            UserToPostLike::where('post_id', $request->post_id)->where('user_id', session('user')['user_id'])->delete();
         }
     
         $likesCount = UserToPostLike::where('post_id', $request->post_id)->count();
