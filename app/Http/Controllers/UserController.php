@@ -14,7 +14,7 @@ class UserController extends Controller
         $usersConnectData = User::getConnect(session('user')['user_id'], 'src');
 
         $userIds = collect($usersConnectData['users'])->pluck('user_id')->all();
-        $postsData = Post::getAllByUsers($userIds);
+        $postsData = Post::getAllByUsers($userIds, 1, 5);
 
         return 
         view('templates/header') . 
