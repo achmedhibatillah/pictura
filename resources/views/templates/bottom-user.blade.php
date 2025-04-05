@@ -13,7 +13,7 @@
                         </div>
                     </div>
                     <div class="col-4 m-0 p-0">
-                        <div class="cursor-pointer text-clr1" onclick="window.location.href='<?= url('/') ?>'">
+                        <div class="cursor-pointer text-clr1" onclick="window.location.href='<?= url('new-post') ?>'">
                             <div class="d-flex justify-content-center img-hover">
                                 <img src="{{ asset('assets/img/icons/post.png') }}" class="he-27 we-27 img-death">
                             </div>
@@ -21,7 +21,7 @@
                         </div>
                     </div>
                     <div class="col-4 m-0 p-0">
-                        <div class="cursor-pointer text-clr1" onclick="window.location.href='<?= url('/') ?>'">
+                        <div class="cursor-pointer text-clr1" onclick="window.location.href='<?= url('notification') ?>'">
                             <div class="d-flex justify-content-center img-hover">
                                 <img src="{{ asset('assets/img/icons/notification.png') }}" class="he-27 we-27 img-death">
                             </div>

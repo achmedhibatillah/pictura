@@ -26,10 +26,8 @@ class PostController extends Controller
                 ->delete();
         }
     
-        // Hitung total like terbaru
         $likesCount = UserToPostLike::where('post_id', $request->post_id)->count();
     
-        // Return JSON agar bisa digunakan oleh AJAX
         return response()->json(['likes_count' => $likesCount]);
     }
     

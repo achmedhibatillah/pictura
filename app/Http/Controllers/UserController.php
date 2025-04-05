@@ -86,7 +86,6 @@ class UserController extends Controller
                 $query->orderBy('slide_order', 'asc');
             }])->get();
 
-        // Cek ini
         foreach ($postsData as $x) {
             if ($postData->post_id !== $x->post_id && $x->slides->isEmpty()) {
                 Post::where('post_id', $x->post_id)->delete();
@@ -104,6 +103,36 @@ class UserController extends Controller
         view('user/post-new', [
             'post' => $postData,
             'slides' => $slidesData,
+            'posts' => $postsData,
+        ]) . 
+        view('templates/bottom-user') . 
+        view('templates/footer');
+    }
+
+    public function notification()
+    {
+        $userData = User::where('user_username', session('user')['user_username'])->first();
+        $isMyProfile = $userData->user_username == session('user')['user_username'] ? true : false ;
+        $connectStatus = [
+            'src' => User::checkConnect(session('user')['user_id'], $userData['user_id'], 'src'),
+            'dst' => User::checkConnect(session('user')['user_id'], $userData['user_id'], 'dst')
+        ];
+        $connectData = [
+            'connected' => User::getConnect($userData->user_id, 'dst'),
+            'connecting' => User::getConnect($userData->user_id, 'src'),
+        ];
+        $postsCount = Post::where('post_status', 1)->where('user_id', $userData->user_id)->count();
+        $postsData = Post::getAll($userData->user_id);
+
+        return 
+        view('templates/header') . 
+        view('templates/top-user') . 
+        view('user/notification', [
+            'user' => $userData,
+            'ismyprofile' => $isMyProfile,
+            'connect' => $connectStatus,
+            'connect_data' => $connectData,
+            'posts_count' => $postsCount,
             'posts' => $postsData,
         ]) . 
         view('templates/bottom-user') . 
