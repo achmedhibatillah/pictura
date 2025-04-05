@@ -120,28 +120,19 @@ class UserController extends Controller
     {
         $userData = User::where('user_username', session('user')['user_username'])->first();
         $isMyProfile = $userData->user_username == session('user')['user_username'] ? true : false ;
-        $connectStatus = [
-            'src' => User::checkConnect(session('user')['user_id'], $userData['user_id'], 'src'),
-            'dst' => User::checkConnect(session('user')['user_id'], $userData['user_id'], 'dst')
-        ];
-        $connectData = [
-            'connected' => User::getConnect($userData->user_id, 'dst'),
-            'connecting' => User::getConnect($userData->user_id, 'src'),
-        ];
-        $postsCount = Post::where('post_status', 1)->where('user_id', $userData->user_id)->count();
         $postsData = Post::getAll($userData->user_id);
 
+        $recommendedPeople = User::getConnect($userData->user_id, 'dst', true, 3);
+        
         return 
         view('templates/header') . 
         view('templates/top-user') . 
-        view('user/notification', [
+        view('user/people', [
             'user' => $userData,
             'ismyprofile' => $isMyProfile,
-            'connect' => $connectStatus,
-            'connect_data' => $connectData,
-            'posts_count' => $postsCount,
             'posts' => $postsData,
-        ]) . 
+            'recommended' => $recommendedPeople,
+            ]) . 
         view('templates/bottom-user') . 
         view('templates/footer');
     }
