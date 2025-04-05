@@ -45,7 +45,7 @@ Route::middleware([UserMiddleware::class])->group(function () {
     Route::post('req/connect', [UserCogController::class, 'connect_connecting']);
     Route::post('req/disconnect', [UserCogController::class, 'connect_disconnect']);
 
-    Route::get('find-people', [UserController::class, 'people']);
+    Route::get('find-people', [UserController::class, 'people']); 
     Route::get('notification', [UserController::class, 'notification']);
 
 });
