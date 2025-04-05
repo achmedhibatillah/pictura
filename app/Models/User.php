@@ -33,31 +33,6 @@ class User extends Model
         return false;
     }
 
-    // public static function getConnect($user_id, $src_or_dst, $else = false, $head = 5)
-    // {
-    //     $query = DB::table('user_to_user_connect')
-    //         ->join('user', function ($join) use ($src_or_dst) {
-    //             if ($src_or_dst === 'src') {
-    //                 $join->on('user_to_user_connect.user_id_dst', '=', 'user.user_id');
-    //             } else {
-    //                 $join->on('user_to_user_connect.user_id_src', '=', 'user.user_id');
-    //             }
-    //         });
-    
-    //     if ($src_or_dst === 'src') {
-    //         $query->where('user_to_user_connect.user_id_src', $user_id);
-    //     } else {
-    //         $query->where('user_to_user_connect.user_id_dst', $user_id);
-    //     }
-    
-    //     $users = $query->select('user.*')->get();
-    
-    //     return [
-    //         'count' => $users->count(),
-    //         'users' => $users->toArray()
-    //     ];
-    // }
-
     public static function getConnect($user_id, $src_or_dst, $else = false, $head = null)
     {
         $query = DB::table('user_to_user_connect')
@@ -70,7 +45,6 @@ class User extends Model
             });
 
         if ($else) {
-            // Jika else = true, tampilkan data yang TIDAK berhubungan dengan user_id
             if ($src_or_dst === 'src') {
                 $query->where('user_to_user_connect.user_id_src', '!=', $user_id)->where('user_to_user_connect.user_id_dst', '!=', $user_id);
             } else {
@@ -81,7 +55,6 @@ class User extends Model
                 $query->limit($head);
             }
         } else {
-            // Jika else = false, tampilkan data yang berhubungan dengan user_id
             if ($src_or_dst === 'src') {
                 $query->where('user_to_user_connect.user_id_src', $user_id);
             } else {
