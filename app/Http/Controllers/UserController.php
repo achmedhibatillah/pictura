@@ -116,24 +116,35 @@ class UserController extends Controller
         view('templates/footer');
     }
 
-    public function people()
+    public function people(Request $request)
     {
         $userData = User::where('user_username', session('user')['user_username'])->first();
         $isMyProfile = $userData->user_username == session('user')['user_username'] ? true : false ;
         $postsData = Post::getAll($userData->user_id);
-
         $recommendedPeople = User::getConnect($userData->user_id, 'dst', true, 3);
-        
-        return 
-        view('templates/header') . 
-        view('templates/top-user') . 
-        view('user/people', [
-            'user' => $userData,
-            'ismyprofile' => $isMyProfile,
-            'posts' => $postsData,
-            'recommended' => $recommendedPeople,
+    
+        if ($request->ajax()) {
+            $user_search = User::getPeoples($request->k, $userData->user_id);
+            return view('user.people-data', [
+                'user' => $userData,
+                'user_search' => $user_search
+            ]);
+        }
+    
+        $user_search = $request->has('k') 
+            ? User::getPeoples($request->k, $userData->user_id) 
+            : null;
+    
+        return view('templates/header') . 
+            view('templates/top-user') . 
+            view('user/people', [
+                'user' => $userData,
+                'ismyprofile' => $isMyProfile,
+                'posts' => $postsData,
+                'recommended' => $recommendedPeople,
+                'user_search' => $user_search,
             ]) . 
-        view('templates/bottom-user') . 
-        view('templates/footer');
-    }
+            view('templates/bottom-user') . 
+            view('templates/footer');
+    }    
 }

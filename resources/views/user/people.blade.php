@@ -1,7 +1,7 @@
 <div class="row m-0 p-0 mt-5">
-    <div class="col-md-8 row justify-content-center m-0 p-0">
+    <div class="col-md-8 m-0 p-0">
         <div class="card m-0 mb-3 p-3" style="height: min-content;">
-            <form action="{{ url('search') }}" method="post" class="">
+            <form action="{{ url('find-people') }}" method="get" class="">
                 @csrf 
                 <label for="" class="ms-2 fsz-11">Find people</label>
                 <div class="position-relative">
@@ -10,9 +10,12 @@
                 </div>
             </form>    
         </div>
+        <div class="card m-0 p-3" id="people-result">
+            @include('user/people-data')
+        </div>
     </div>
     <div class="col-md-4 m-0 p-0 ps-0 ps-md-3">
-        <div class="card m-0 p-3">
+        <div class="card m-0 mt-3 mt-md-0 p-3">
             <h5>Recommended people to connect</h5>
             <p class="m-0 text-secondary fsz-11">Connect more people to get updates from them.</p>
             <hr>
@@ -39,3 +42,21 @@
         </div>
     </div>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function(){
+    $('input[name="k"]').on('input', function(){
+        let keyword = $(this).val();
+
+        $.ajax({
+            url: "{{ url('find-people') }}",
+            method: 'GET',
+            data: { k: keyword },
+            success: function(response){
+                $('#people-result').html(response);
+            }
+        });
+    });
+});
+</script>

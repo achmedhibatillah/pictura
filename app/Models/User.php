@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\DB;
 
 class User extends Model
@@ -20,7 +21,29 @@ class User extends Model
         'user_pass',
         'user_photo',
         'user_who',
-    ];
+    ]; 
+
+    public function connecting(): HasMany
+    {
+        return $this->hasMany(UserToUserConnect::class, 'user_id_src');
+    }
+
+    public static function getPeoples($keyword = null, $user_id) {
+        $keyword = '%' . $keyword . '%';
+    
+        $usersData = User::where('user_username', 'like', $keyword)
+                        ->orWhere('user_fullname', 'like', $keyword)
+                        ->get();
+    
+        foreach ($usersData as $x) {
+            $isConnected = UserToUserConnect::where('user_id_src', $user_id)
+                                            ->where('user_id_dst', $x->user_id)
+                                            ->exists();
+            $x->connect_status = $isConnected;
+        }
+    
+        return $usersData;
+    }    
 
     public static function checkConnect($my_user_id, $target_user_id, $src_or_dst)
     {
