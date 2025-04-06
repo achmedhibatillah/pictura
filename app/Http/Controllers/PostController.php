@@ -19,6 +19,10 @@ class PostController extends Controller
                 'post_id' => $request->post_id,
                 'like_status' => 1,
             ];
+            if (UserToPostLike::where('user_id', session('user')['user_id'])->where('post_id', $request->post_id)->exists()) {
+                UserToPostLike::where('user_id', session('user')['user_id'])->where('post_id', $request->post_id)->delete();   
+            }
+
             UserToPostLike::create($likeData);
         } else {
             UserToPostLike::where('post_id', $request->post_id)->where('user_id', session('user')['user_id'])->delete();

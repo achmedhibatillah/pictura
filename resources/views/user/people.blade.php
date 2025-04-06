@@ -31,12 +31,12 @@
                     <div class="ms-3">
                         <p class="m-0 mb-1 text-clr1 fw-bold lh-1 d-flex align-items-center"><i class="font-rounded fst-normal">@</i> {{ $x->user_username }} {!! ($x->user_id == session('user')['user_id']) ? '<i class="fst-normal fw-normal ms-1 fsz-9 border-clr1 rounded px-2">you</i>'  : '' !!}</p>
                         <p class="m-0 text-secondary lh-1">{{ $x->user_fullname }}</p>
+                        <form action="{{ url('req/connect') }}" method="post" class="mt-2">
+                            @csrf
+                            <input type="hidden" name="user_id_dst" value="{{ $user['user_id'] }}">
+                            <button type="submit" class="btn btn-sm btn-clr1 rounded-s px-3 lh-1 fsz-11">Connect</button>
+                        </form>
                     </div>
-                    <form action="{{ url('req/connect') }}" method="post" class="ms-auto">
-                        @csrf
-                        <input type="hidden" name="user_id_dst" value="{{ $user['user_id'] }}">
-                        <button type="submit" class="btn btn-sm btn-clr1 rounded-s px-3 lh-1 fsz-11">Connect</button>
-                    </form>
                 </div>
             @endforeach
         </div>

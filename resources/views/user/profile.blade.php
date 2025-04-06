@@ -85,10 +85,11 @@
                                                             <img src="{{ asset('assets/img/icons/blank-profile.png') }}" class="img-cover img-death">
                                                         @endif
                                                     </div>
-                                                    <div class="">
-                                                        <p class="fst-normal text-clr1 fw-bold m-0"><i class="font-rounded fst-normal">@</i>{{ $user['user_username'] }}</p>
-                                                        <p class="text-secondary m-0 fsz-10">{{ $user['user_fullname'] }}</p>
-                                                    </div>
+                                                        <div class="">
+                                                            <p class="fst-normal text-clr1 fw-bold m-0"><i class="font-rounded fst-normal">@</i>{{ $user['user_username'] }}</p>
+                                                            <p class="text-secondary m-0 fsz-10">{{ $user['user_fullname'] }}</p>
+                                                        </div>
+                                                        <i class="fas fa-ellipsis-v ms-auto"></i>
                                                 </div>
                                                 <p class="mt-3 flex-grow-1 overflow-x-hidden overflow-y-scroll">{{ $x->post_desc }}</p>
                                                 <div class="mt-auto">

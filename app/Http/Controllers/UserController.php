@@ -119,20 +119,26 @@ class UserController extends Controller
     public function people(Request $request)
     {
         $userData = User::where('user_username', session('user')['user_username'])->first();
-        $isMyProfile = $userData->user_username == session('user')['user_username'] ? true : false ;
+        $isMyProfile = $userData->user_username === session('user')['user_username'];
         $postsData = Post::getAll($userData->user_id);
         $recommendedPeople = User::getConnect($userData->user_id, 'dst', true, 3);
     
+        $keyword = trim($request->k ?? '');
+        $hasValidKeyword = !empty($keyword);
+    
         if ($request->ajax()) {
-            $user_search = User::getPeoples($request->k, $userData->user_id);
+            $user_search = $hasValidKeyword
+                ? User::getPeoples($keyword, $userData->user_id, 10)
+                : null;
+    
             return view('user.people-data', [
                 'user' => $userData,
                 'user_search' => $user_search
             ]);
         }
     
-        $user_search = $request->has('k') 
-            ? User::getPeoples($request->k, $userData->user_id) 
+        $user_search = $hasValidKeyword
+            ? User::getPeoples($keyword, $userData->user_id)
             : null;
     
         return view('templates/header') . 
@@ -146,5 +152,6 @@ class UserController extends Controller
             ]) . 
             view('templates/bottom-user') . 
             view('templates/footer');
-    }    
+    }
+      
 }

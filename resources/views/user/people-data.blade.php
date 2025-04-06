@@ -1,4 +1,4 @@
-@if($user_search !== null)
+@if($user_search !== null && $user_search->count() > 0)    
     @foreach($user_search as $x)
         <div class="d-flex align-items-center m-0 px-2 py-3 bg-clrw">
             <div class="rounded-circle overflow-hidden flex-shrink-0" style="height:50px;width:50px;">
@@ -39,6 +39,8 @@
             @endif
         </div>
     @endforeach
+@elseif(request()->has('k') && request()->get('k') !== '')
+    <p class="text-secondary m-0">No users found.</p>
 @else
     <p class="text-secondary m-0">Type in the search field to find peoples.</p>
 @endif

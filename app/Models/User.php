@@ -28,12 +28,15 @@ class User extends Model
         return $this->hasMany(UserToUserConnect::class, 'user_id_src');
     }
 
-    public static function getPeoples($keyword = null, $user_id) {
+    public static function getPeoples($keyword = null, $user_id, $paginate = null) {
         $keyword = '%' . $keyword . '%';
     
-        $usersData = User::where('user_username', 'like', $keyword)
-                        ->orWhere('user_fullname', 'like', $keyword)
-                        ->get();
+        $query = User::where('user_username', 'like', $keyword)
+                    ->orWhere('user_fullname', 'like', $keyword);
+    
+        $usersData = $paginate 
+            ? $query->paginate($paginate)
+            : $query->get();
     
         foreach ($usersData as $x) {
             $isConnected = UserToUserConnect::where('user_id_src', $user_id)
@@ -43,7 +46,8 @@ class User extends Model
         }
     
         return $usersData;
-    }    
+    }
+    
 
     public static function checkConnect($my_user_id, $target_user_id, $src_or_dst)
     {
