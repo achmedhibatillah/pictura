@@ -47,7 +47,6 @@ class User extends Model
     
         return $usersData;
     }
-    
 
     public static function checkConnect($my_user_id, $target_user_id, $src_or_dst)
     {
@@ -62,6 +61,38 @@ class User extends Model
 
     public static function getConnect($user_id, $src_or_dst, $else = false, $head = null)
     {
+        if ($else) {
+            if ($src_or_dst === 'src') {
+                $connectedUserIds = DB::table('user_to_user_connect')
+                    ->where('user_id_src', $user_id)
+                    ->pluck('user_id_dst');
+        
+                $query = DB::table('user')
+                    ->where('user_id', '!=', $user_id)
+                    ->whereNotIn('user_id', $connectedUserIds);
+            } else {
+                $connectedUserIds = DB::table('user_to_user_connect')
+                    ->where('user_id_dst', $user_id)
+                    ->pluck('user_id_src');
+        
+                $query = DB::table('user')
+                    ->where('user_id', '!=', $user_id)
+                    ->whereNotIn('user_id', $connectedUserIds);
+            }
+        
+            if (!is_null($head)) {
+                $query->limit($head);
+            }
+        
+            $users = $query->get();
+        
+            return [
+                'count' => $users->count(),
+                'users' => $users->toArray(),
+            ];
+        }
+        
+    
         $query = DB::table('user_to_user_connect')
             ->join('user', function ($join) use ($src_or_dst) {
                 if ($src_or_dst === 'src') {
@@ -70,33 +101,18 @@ class User extends Model
                     $join->on('user_to_user_connect.user_id_src', '=', 'user.user_id');
                 }
             });
-
-        if ($else) {
-            if ($src_or_dst === 'src') {
-                $query->where('user_to_user_connect.user_id_src', '!=', $user_id)->where('user_to_user_connect.user_id_dst', '!=', $user_id);
-            } else {
-                $query->where('user_to_user_connect.user_id_dst', '!=', $user_id)->where('user_to_user_connect.user_id_src', '!=', $user_id);
-            }
-
-            if (!is_null($head)) {
-                $query->limit($head);
-            }
+    
+        if ($src_or_dst === 'src') {
+            $query->where('user_to_user_connect.user_id_src', $user_id);
         } else {
-            if ($src_or_dst === 'src') {
-                $query->where('user_to_user_connect.user_id_src', $user_id);
-            } else {
-                $query->where('user_to_user_connect.user_id_dst', $user_id);
-            }
+            $query->where('user_to_user_connect.user_id_dst', $user_id);
         }
-
+    
         $users = $query->select('user.*')->get();
-
+    
         return [
             'count' => $users->count(),
-            'users' => $users->toArray()
+            'users' => $users->toArray(),
         ];
     }
-
-    
-
 }

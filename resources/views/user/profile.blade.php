@@ -128,13 +128,18 @@
                         <!-- Modal -->
                         <div class="modal fade" id="modalDeletePost{{ $x->post_public_id }}" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-sm">
-                                <div class="modal-content border-light border-radius-none">
+                                <div class="modal-body modal-content border-light border-radius-none">
                                     <div class="modal-body p-0 border-radius-none">
-                                    <button type="button" class="position-absolute border-none bg-transparent" style="top:0;right:0;" data-bs-dismiss="modal" aria-label="Close">x</button>
+                                    <button type="button" class="position-absolute bg-transparent border-none" style="top:0;right:0;" data-bs-toggle="modal" data-bs-target="#modalPost{{ $x->post_public_id }}">x</button>
                                     <form action="{{ url('del-post') }}" method="post">
                                         @csrf 
                                         <input type="hidden" name="post_public_id" value="{{ $x->post_public_id }}">
-                                        <button type="submit" class="btn btn-sm btn-danger">Delete <i class="fas fa-trash"></i></button>
+                                        <p class="me-3">Are you sure you want to delete this post?</p>
+                                        <img src="{{ asset($x->slides[0]->slide_image) }}" class="w-75 d-block">
+                                        <div class="mt-3">
+                                            <button type="button" class="btn btn-sm btn-secondary" data-bs-toggle="modal" data-bs-target="#modalPost{{ $x->post_public_id }}">Cancel</button>
+                                            <button type="submit" class="btn btn-sm btn-danger">Delete <i class="fas fa-trash"></i></button>
+                                        </div>
                                     </form>
                                     </div>
                                 </div>

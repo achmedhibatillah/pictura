@@ -168,7 +168,7 @@ class UserController extends Controller
         $userData = User::where('user_username', session('user')['user_username'])->first();
         $isMyProfile = $userData->user_username === session('user')['user_username'];
         $postsData = Post::getAll($userData->user_id);
-        $recommendedPeople = User::getConnect($userData->user_id, 'dst', true, 3);
+        $recommendedPeople = User::getConnect($userData->user_id, 'src', true, 3);
     
         $keyword = trim($request->k ?? '');
         $hasValidKeyword = !empty($keyword);

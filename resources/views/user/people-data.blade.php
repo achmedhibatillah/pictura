@@ -23,14 +23,14 @@
                     @if($x->connect_status == true)
                         <form action="{{ url('req/disconnect') }}" method="post" class="mt-2">
                             @csrf
-                            <input type="hidden" name="user_id_dst" value="{{ $user['user_id'] }}">
+                            <input type="hidden" name="user_id_dst" value="{{ $x->user_id }}">
                             <p class="m-0 fsz-9 text-center text-secondary">Connected <i class="fas fa-check-circle"></i></p>
                             <button type="submit" style="width:90px;" class="btn btn-sm btn-outline-clr1 rounded-s px-3 lh-1 fsz-11">Disconnect</button>
                         </form>
                     @else
                         <form action="{{ url('req/connect') }}" method="post" class="mt-2">
                             @csrf
-                            <input type="hidden" name="user_id_dst" value="{{ $user['user_id'] }}">
+                            <input type="hidden" name="user_id_dst" value="{{ $x->user_id }}">
                             <p class="m-0 fsz-9 text-center text-secondary">Not connected</p>
                             <button type="submit" style="width:90px;" class="btn btn-sm btn-clr1 rounded-s px-3 lh-1 fsz-11">Connect</button>
                         </form>
