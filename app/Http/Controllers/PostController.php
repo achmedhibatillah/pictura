@@ -170,7 +170,7 @@ class PostController extends Controller
         return redirect()->back();
     }    
 
-    public function post_del(Request $request)
+    public function post_del(Request $request) 
     {
         $postData = Post::where('post_public_id', $request->post_public_id)->first();
         $slidesData = Slide::where('post_id', $postData->post_id)->get();
