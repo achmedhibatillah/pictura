@@ -182,6 +182,10 @@ class PostController extends Controller
         Post::where('post_public_id', $request->post_public_id)->delete();
         Slide::where('post_id', $postData->post_id)->delete();
 
+        if ($request->has('redirect')) {
+            return redirect()->to($request->redirect);
+        }
+
         return redirect()->back();
     }
 }

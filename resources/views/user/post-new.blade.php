@@ -69,6 +69,29 @@
                     <input type="hidden" name="post_id" value="{{ $post->post_id }}">
                     <button type="submit" class="td-hover fw-bold text-primary btn btn-transparent p-0">Share now</button>
                 </form>
+                <div class="">
+                    <a href="#" class="td-hover fw-bold text-primary btn btn-transparent p-0" data-bs-toggle="modal" data-bs-target="#modalDelete">Delete</a>
+                </div>
+                <!-- Modal -->
+                <div class="modal fade" id="modalDelete" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-sm">
+                        <div class="modal-body modal-content border-light border-radius-none">
+                            <div class="modal-body p-0 border-radius-none">
+                            <button type="button" class="position-absolute bg-transparent border-none" style="top:0;right:0;" data-bs-dismiss="modal" aria-label="Close">x</button>
+                            <form action="{{ url('del-post') }}" method="post">
+                                @csrf 
+                                <input type="hidden" name="post_public_id" value="{{ $post->post_public_id }}">
+                                <input type="hidden" name="redirect" value="new-post">
+                                <p class="me-3">Are you sure you want to delete this post?</p>
+                                <div class="mt-3">
+                                    <button type="button" class="btn btn-sm btn-secondary" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
+                                    <button type="submit" class="btn btn-sm btn-danger">Delete <i class="fas fa-trash"></i></button>
+                                </div>
+                            </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             @endif
         </div>
     </div>
