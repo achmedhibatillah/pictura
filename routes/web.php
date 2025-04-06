@@ -41,6 +41,8 @@ Route::middleware([UserMiddleware::class])->group(function () {
     Route::post('new-post/image/up', [PostController::class, 'post_image_up']);
     Route::post('new-post/image/down', [PostController::class, 'post_image_down']);
     Route::post('new-post/image/del', [PostController::class, 'post_image_del']);
+    Route::get('edit-post/{slug}', [UserController::class, 'post_edit']);
+    Route::post('edit-post/update', [PostController::class, 'post_update']);
 
     Route::post('req/connect', [UserCogController::class, 'connect_connecting']);
     Route::post('req/disconnect', [UserCogController::class, 'connect_disconnect']);

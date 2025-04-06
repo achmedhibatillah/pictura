@@ -45,6 +45,16 @@ class PostController extends Controller
         return redirect()->to('usr/' . session('user')['user_username'])->with('success', 'New post successfully added.');
     }
 
+    public function post_update(Request $request)
+    {
+        $postData = [
+            'post_status' => 1,
+        ];
+
+        Post::where('post_id', $request->post_id)->update($postData);
+        return redirect()->to('usr/' . session('user')['user_username'])->with('success', 'Post successfully updated.');
+    }
+
     public function post_desc_edit(Request $request)
     {
     

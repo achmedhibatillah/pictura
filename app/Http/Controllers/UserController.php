@@ -86,6 +86,11 @@ class UserController extends Controller
         }
 
         $postData = Post::where('post_public_id', $post_public_id)->first();
+
+        if (session('user')['user_id'] !== $postData->user_id) {
+            return redirect()->back();
+        }
+
         $slidesData = Slide::orderBy('slide_order', 'asc')->where('post_id', $postData->post_id)->get();
 
         $postsData = Post::where('post_status', 3)->where('user_id', $postData->user_id)->orderBy('created_at', 'desc')
@@ -108,6 +113,48 @@ class UserController extends Controller
         view('templates/header') . 
         view('templates/top-user') . 
         view('user/post-new', [
+            'post' => $postData,
+            'slides' => $slidesData,
+            'posts' => $postsData,
+        ]) . 
+        view('templates/bottom-user') . 
+        view('templates/footer');
+    }
+
+    public function post_edit($post_public_id = null)
+    {
+        if ($post_public_id == null) {
+            return redirect()->back();
+        }
+
+        $postData = Post::where('post_public_id', $post_public_id)->first();
+
+        if (session('user')['user_id'] !== $postData->user_id) {
+            return redirect()->back();
+        }
+
+        $slidesData = Slide::orderBy('slide_order', 'asc')->where('post_id', $postData->post_id)->get();
+
+        $postsData = Post::where('post_status', 3)->where('user_id', $postData->user_id)->orderBy('created_at', 'desc')
+            ->with(['slides' => function($query) {
+                $query->orderBy('slide_order', 'asc');
+            }])->get();
+
+        foreach ($postsData as $x) {
+            if ($postData->post_id !== $x->post_id && $x->slides->isEmpty()) {
+                Post::where('post_id', $x->post_id)->delete();
+            }
+        }
+
+        $postsData = Post::where('post_status', 2)->where('user_id', $postData->user_id)->orderBy('created_at', 'desc')
+        ->with(['slides' => function($query) {
+            $query->orderBy('slide_order', 'asc');
+        }])->get();
+    
+        return 
+        view('templates/header') . 
+        view('templates/top-user') . 
+        view('user/post-edit', [
             'post' => $postData,
             'slides' => $slidesData,
             'posts' => $postsData,

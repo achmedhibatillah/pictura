@@ -85,11 +85,20 @@
                                                             <img src="{{ asset('assets/img/icons/blank-profile.png') }}" class="img-cover img-death">
                                                         @endif
                                                     </div>
-                                                        <div class="">
-                                                            <p class="fst-normal text-clr1 fw-bold m-0"><i class="font-rounded fst-normal">@</i>{{ $user['user_username'] }}</p>
-                                                            <p class="text-secondary m-0 fsz-10">{{ $user['user_fullname'] }}</p>
+                                                    <div class="">
+                                                        <p class="fst-normal text-clr1 fw-bold m-0"><i class="font-rounded fst-normal">@</i>{{ $user['user_username'] }}</p>
+                                                        <p class="text-secondary m-0 fsz-10">{{ $user['user_fullname'] }}</p>
+                                                    </div>
+                                                    @if($ismyprofile)
+                                                        <div class="dropdown ms-auto">
+                                                            <div class="cursor-pointer we-30 d-flex justify-content-center" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-ellipsis-v"></i></div>
+                                                            <ul class="dropdown-menu mt-2 fsz-12 bg-clrsec">
+                                                                <li><a class="dropdown-item text-secondary" href="{{ url('edit-post/' . $x->post_public_id) }}">Edit mode <i class="fas fa-edit"></i></a></li>
+                                                                <li><hr class="dropdown-divider"></li>
+                                                                <li><a class="dropdown-item text-danger" href="#" data-bs-toggle="modal" data-bs-target="#modalDeletePost{{ $x->post_public_id }}">Delete <i class="fas fa-trash"></i></a></li>
+                                                            </ul>
                                                         </div>
-                                                        <i class="fas fa-ellipsis-v ms-auto"></i>
+                                                    @endif
                                                 </div>
                                                 <p class="mt-3 flex-grow-1 overflow-x-hidden overflow-y-scroll">{{ $x->post_desc }}</p>
                                                 <div class="mt-auto">
@@ -116,6 +125,22 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- Modal -->
+                        <div class="modal fade" id="modalDeletePost{{ $x->post_public_id }}" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-sm">
+                                <div class="modal-content border-light border-radius-none">
+                                    <div class="modal-body p-0 border-radius-none">
+                                    <button type="button" class="position-absolute border-none bg-transparent" style="top:0;right:0;" data-bs-dismiss="modal" aria-label="Close">x</button>
+                                    <form action="{{ url('del-post') }}" method="post">
+                                        @csrf 
+                                        <input type="hidden" name="post_public_id" value="{{ $x->post_public_id }}">
+                                        <button type="submit" class="btn btn-sm btn-danger">Delete <i class="fas fa-trash"></i></button>
+                                    </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                                                
                         <script>
                             $(document).ready(function(){
                                 $('#modalPost{{ $x->post_public_id }}').on('shown.bs.modal', function () {
