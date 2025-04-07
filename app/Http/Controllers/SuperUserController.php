@@ -117,7 +117,6 @@ class SuperUserController extends Controller
 
         $userLast = User::where('user_id', $userId)->first();
         User::where('user_id', $userId)->update($userData);
-        session([ 'user' => User::where('user_id', $userId)->first() ]);
 
         if ($request->user_email == $userLast['user_email']) {
             return redirect()->back();
@@ -146,7 +145,7 @@ class SuperUserController extends Controller
 
         $userLast = User::where('user_id', $userId)->first();
         User::where('user_id', $userId)->update($userData);
-        session([ 'user' => User::where('user_id', $userId)->first() ]);
+        
 
         if ($request->user_pass == $userLast['user_pass']) {
             return redirect()->back();
@@ -187,7 +186,6 @@ class SuperUserController extends Controller
     
             User::where('user_id', $userId)->update(['user_photo' => $user_photo_path . $user_photo_filename]);
     
-            session(['user' => User::where('user_id', $userId)->first()]);
             return redirect()->back()->with('success', 'Photo updated successfully.');
         }
     
@@ -221,12 +219,36 @@ class SuperUserController extends Controller
 
         $userLast = User::where('user_id', $userId)->first();
         User::where('user_id', $userId)->update($userData);
-        session([ 'user' => User::where('user_id', $userId)->first() ]);
-
+        
         if ($request->user_username == $userLast['user_username'] && $request->user_fullname == $userLast['user_fullname']) {
             return redirect()->back();
         }
 
         return redirect()->back()->with('success', 'Name updated successfully.');
+    }
+
+    public function user_update_desc(Request $request)
+    {
+        $userId = $request->user_id;
+    
+        $request->validate([
+            'user_desc' => 'max:350',
+
+        ], [
+            'user_desc.max' => 'The description field must not be greater than 350 characters.',
+        ]);
+        
+        $userData = [
+            'user_desc' => ($request->user_desc === '') ? null : $request->user_desc,
+        ];
+
+        $userLast = User::where('user_id', $userId)->first();
+        User::where('user_id', $userId)->update($userData);
+
+        if ($request->user_desc == $userLast['user_desc']) {
+            return redirect()->back();
+        }
+
+        return redirect()->back()->with('success', 'Description updated successfully.');
     }
 }

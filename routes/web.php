@@ -62,6 +62,7 @@ Route::middleware([SuperUserMiddleware::class])->group(function () {
     Route::post('manage-users/update/pass', [SuperUserController::class, 'user_update_pass']);
     Route::post('manage-users/update/photo', [SuperUserController::class, 'user_update_photo']);
     Route::post('manage-users/update/name', [SuperUserController::class, 'user_update_name']);
+    Route::post('manage-users/update/desc', [SuperUserController::class, 'user_update_desc']);
     Route::post('manage-users/add', [SuperUserController::class, 'user_add']);
     Route::post('manage-users/del', [SuperUserController::class, 'user_del']);
 });

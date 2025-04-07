@@ -219,8 +219,9 @@
                 <button type="button" class="ms-auto hover bg-clr2 border-light text-light rounded-circle he-28 we-28" data-bs-dismiss="modal" aria-label="Close">x</button>
             </div>
             <div class="modal-body">
-                <form action="{{ url('edit-profile/desc') }}" id="formEditDescription" method="post" class="text-clr2">
+                <form action="{{ url('manage-users/update/desc') }}" id="formEditDescription" method="post" class="text-clr2">
                     @csrf
+                    <input type="hidden" name="user_id" value="{{ $user['user_id'] }}">
                     <div class="mb-3">
                         <div class="">
                             <textarea name="user_desc" class="d-inline input-effect rounded-s border-clr2 bg-clrsec w-100 p-3 fsz-11 m-0" autocomplete="off" placeholder="..." style="height:180px;">{{ old('user_desc', $user['user_desc']) }}</textarea>
