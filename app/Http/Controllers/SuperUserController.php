@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 
 class SuperUserController extends Controller
 {
@@ -191,5 +192,41 @@ class SuperUserController extends Controller
         }
     
         return redirect()->back()->with('error', 'No photo uploaded.');
+    }
+
+    public function user_update_name(Request $request)
+    {
+        $userId = $request->user_id;
+    
+        $request->validate([
+            'user_username' => [
+                'required', 'min:6', 'max:20',
+                Rule::unique('user', 'user_username')->ignore($userId, 'user_id'),
+            ],
+            'user_fullname' => 'required|min:3|max:255',
+        ], [
+            'user_username.required' => 'The username is required.',
+            'user_username.min' => 'The username must be at least 6 characters.',
+            'user_username.max' => 'The username must not be greater than 20 characters.',
+            'user_username.unique' => 'The username has already been taken.',
+            'user_fullname.required' => 'The full name field is required.',
+            'user_fullname.min' => 'The full name field must be at least 3 characters.',
+            'user_fullname.max' => 'The full name field must not be greater than 255 characters.',
+        ]);
+        
+        $userData = [
+            'user_username' => $request->user_username,
+            'user_fullname' => $request->user_fullname,
+        ];
+
+        $userLast = User::where('user_id', $userId)->first();
+        User::where('user_id', $userId)->update($userData);
+        session([ 'user' => User::where('user_id', $userId)->first() ]);
+
+        if ($request->user_username == $userLast['user_username'] && $request->user_fullname == $userLast['user_fullname']) {
+            return redirect()->back();
+        }
+
+        return redirect()->back()->with('success', 'Name updated successfully.');
     }
 }
