@@ -15,6 +15,10 @@ class SuperUserMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
+        if ($request->session()->get('is_superuser') !== true) {
+            return redirect('login')->with('error', 'You must be logged in.');
+        }
+
         return $next($request);
-    }
+    } 
 }

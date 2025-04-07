@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\SuperUserController;
 use App\Http\Controllers\UserCogController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\GuestMiddleware;
@@ -55,4 +56,6 @@ Route::middleware([UserMiddleware::class])->group(function () {
 });
 
 Route::middleware([SuperUserMiddleware::class])->group(function () {
+    Route::get('manage-users', [SuperUserController::class, 'index']);
+    Route::post('manage-users/del', [SuperUserController::class, 'user_del']);
 });

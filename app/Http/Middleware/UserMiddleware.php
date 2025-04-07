@@ -16,7 +16,7 @@ class UserMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         if ($request->session()->get('is_user') !== true) {
-            return redirect('login')->with('error', 'Silakan login terlebih dahulu.');
+            return redirect('login')->with('error', 'You must be logged in.');
         }
 
         return $next($request);
