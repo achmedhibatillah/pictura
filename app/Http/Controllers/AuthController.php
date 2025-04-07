@@ -37,6 +37,14 @@ class AuthController extends Controller
         $user = User::where('user_username', $request->user_identification)->orWhere('user_email', $request->user_identification)->first();
 
         if ($user && Hash::check($request->user_pass, $user->user_pass)) {
+            if ($user->user_who == 1) {
+                session([
+                    'is_user' => true,
+                    'is_superuser' => true,
+                    'user' => $user,
+                ]);
+            }
+
             session([
                 'is_user' => true,
                 'user' => $user,

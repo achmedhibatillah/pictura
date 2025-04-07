@@ -5,6 +5,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserCogController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\GuestMiddleware;
+use App\Http\Middleware\SuperUserMiddleware;
 use App\Http\Middleware\UserMiddleware;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Session;
@@ -51,4 +52,7 @@ Route::middleware([UserMiddleware::class])->group(function () {
     Route::get('find-people', [UserController::class, 'people']); 
     Route::get('notification', [UserController::class, 'notification']);
 
+});
+
+Route::middleware([SuperUserMiddleware::class])->group(function () {
 });

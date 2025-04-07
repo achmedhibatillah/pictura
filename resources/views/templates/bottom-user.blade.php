@@ -4,7 +4,7 @@
         <div class="col-11 col-md-10 col-xl-8 m-0 p-0" style="max-width:1200px;">
             <div class="row m-0 p-0 pt-2 pt-md-0 pb-2">
                 <div class="col-7 row m-0 p-0">
-                    <div class="col-4 m-0 p-0">
+                    <div class="{{ session()->has('is_superuser') ? 'col-3' : 'col-4' }} m-0 p-0">
                         <div class="cursor-pointer text-clr1" onclick="window.location.href='<?= url('/') ?>'">
                             <div class="d-flex justify-content-center img-hover">
                                 <img src="{{ asset('assets/img/icons/homepage.png') }}" class="he-27 we-27 img-death">
@@ -12,7 +12,7 @@
                             <p class="text-center m-0 d-none d-md-block fsz-10">Homepage</p>
                         </div>
                     </div>
-                    <div class="col-4 m-0 p-0">
+                    <div class="{{ session()->has('is_superuser') ? 'col-3' : 'col-4' }} m-0 p-0">
                         <div class="cursor-pointer text-clr1" onclick="window.location.href='<?= url('new-post') ?>'">
                             <div class="d-flex justify-content-center img-hover">
                                 <img src="{{ asset('assets/img/icons/post.png') }}" class="he-27 we-27 img-death">
@@ -20,7 +20,7 @@
                             <p class="text-center m-0 d-none d-md-block fsz-10">New Post</p>
                         </div>
                     </div>
-                    <div class="col-4 m-0 p-0">
+                    <div class="{{ session()->has('is_superuser') ? 'col-3' : 'col-4' }} m-0 p-0">
                         <div class="cursor-pointer text-clr1" onclick="window.location.href='<?= url('find-people') ?>'">
                             <div class="d-flex justify-content-center img-hover">
                                 <img src="{{ asset('assets/img/icons/find-people.png') }}" class="he-27 we-27 img-death">
@@ -28,6 +28,16 @@
                             <p class="text-center m-0 d-none d-md-block fsz-10">Find People</p>
                         </div>
                     </div>
+                    @if(session()->has('is_superuser'))
+                        <div class="{{ session()->has('is_superuser') ? 'col-3' : 'col-4' }} m-0 p-0">
+                            <div class="cursor-pointer text-clr1" onclick="window.location.href='<?= url('manage-users') ?>'">
+                                <div class="d-flex justify-content-center img-hover">
+                                    <img src="{{ asset('assets/img/icons/manage-users.png') }}" class="he-27 we-27 img-death">
+                                </div>
+                                <p class="text-center m-0 d-none d-md-block fsz-10">Manage Users</p>
+                            </div>
+                        </div>
+                    @endif
                 </div>
                 <div class="col-5 m-0 p-0 text-clr1 position-relative d-flex flex-column">
                     <div id="profile-bottom" class="position-absolute translate-center rounded-circle overflow-hidden cursor-pointer" style="border:3px solid white;left:50%;"  onclick="window.location.href='<?= url('usr/' . session('user')['user_username']) ?>'">
