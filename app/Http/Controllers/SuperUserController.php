@@ -96,4 +96,100 @@ class SuperUserController extends Controller
 
         return redirect()->back()->with('success', 'User data with username @' . $userData->user_username . ' was successfully deleted.');
     }
+
+    public function user_update_email(Request $request)
+    {
+        $userId = $request->user_id;
+    
+        $request->validate([
+            'user_email' => 'required|max:255|email',
+
+        ], [
+            'user_email.required' => 'The email field is required.',
+            'user_email.max' => 'The email field must not be greater than 255 characters.',
+            'user_email.email' =>  'The email must be a valid email address.',
+        ]);
+        
+        $userData = [
+            'user_email' => $request->user_email,
+        ];
+
+        $userLast = User::where('user_id', $userId)->first();
+        User::where('user_id', $userId)->update($userData);
+        session([ 'user' => User::where('user_id', $userId)->first() ]);
+
+        if ($request->user_email == $userLast['user_email']) {
+            return redirect()->back();
+        }
+
+        return redirect()->back()->with('success', 'Email updated successfully.');
+    }
+
+    public function user_update_pass(Request $request)
+    {
+        $userId = $request->user_id;
+    
+        $request->validate([
+            'user_pass' => 'required|min:8|max:20|regex:/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[\W_]).+$/|confirmed',
+        ], [
+            'user_pass.required' => 'The password is required.',
+            'user_pass.min' => 'The password must be at least 8 characters.',
+            'user_pass.max' => 'The password must not be greater than 20 characters.',
+            'user_pass.regex' => 'The password must contain at least one letter, one number, and one symbol.',
+            'user_pass.confirmed' => 'The password confirmation does not match.',
+        ]);
+        
+        $userData = [
+            'user_pass' => Hash::make($request->user_pass),
+        ];
+
+        $userLast = User::where('user_id', $userId)->first();
+        User::where('user_id', $userId)->update($userData);
+        session([ 'user' => User::where('user_id', $userId)->first() ]);
+
+        if ($request->user_pass == $userLast['user_pass']) {
+            return redirect()->back();
+        }
+
+        return redirect()->back()->with('success', 'Password updated successfully.');
+    }
+
+    public function user_update_photo(Request $request)
+    {
+        $userId = $request->user_id;
+    
+        $request->validate([
+            'user_photo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ], [
+            'user_photo.required' => 'Harap unggah foto.',
+            'user_photo.image' => 'File harus berupa gambar.',
+            'user_photo.mimes' => 'Format gambar yang diperbolehkan: jpeg, png, jpg, gif.',
+            'user_photo.max' => 'Ukuran gambar tidak boleh lebih dari 2MB.',
+        ]);
+    
+        if ($request->hasFile('user_photo')) {
+            $user_photo_file = $request->file('user_photo');
+            $user_photo_filename = LogicController::generateUniqueId('user', 'user_photo', 55) . '.' . $user_photo_file->getClientOriginalExtension();
+
+            $user_photo_path = 'assets/img/pp/';
+            $destinationPath = public_path($user_photo_path);
+    
+            $user = User::where('user_id', $userId)->first();
+            if ($user && $user->user_photo) {
+                $oldFilePath = public_path($user->user_photo);
+                if (File::exists($oldFilePath)) {
+                    File::delete($oldFilePath);
+                }
+            }
+    
+            $user_photo_file->move($destinationPath, $user_photo_filename);
+    
+            User::where('user_id', $userId)->update(['user_photo' => $user_photo_path . $user_photo_filename]);
+    
+            session(['user' => User::where('user_id', $userId)->first()]);
+            return redirect()->back()->with('success', 'Photo updated successfully.');
+        }
+    
+        return redirect()->back()->with('error', 'No photo uploaded.');
+    }
 }
