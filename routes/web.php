@@ -57,5 +57,7 @@ Route::middleware([UserMiddleware::class])->group(function () {
 
 Route::middleware([SuperUserMiddleware::class])->group(function () {
     Route::get('manage-users', [SuperUserController::class, 'index']);
+    Route::get('manage-users/edit/{slug}', [SuperUserController::class, 'user_edit']);
+    Route::post('manage-users/add', [SuperUserController::class, 'user_add']);
     Route::post('manage-users/del', [SuperUserController::class, 'user_del']);
 });
